@@ -1,10 +1,12 @@
 const express = require('express'); //import express
 
+const helmet = require('helmet');
+
 const dotenv = require('dotenv').config();
 
 const cors = require('cors');
 
-const bodyParser = require('body-parser'); //import body-parser
+// const bodyParser = require('body-parser'); //import body-parser
 
 const mongoose = require('mongoose'); //import mongoose
 
@@ -16,7 +18,7 @@ mongoose.connect('mongodb+srv://' + process.env.DB_USER + ':'+ process.env.DB_PA
 { useNewUrlParser: true,
   useUnifiedTopology: true })
   .then(() => console.log('Connexion à MongoDB réussie !'))
-  .catch(() => console.log('Connexion à MongoDB échouée !'));
+  .catch((e) => console.log('Connexion à MongoDB échouée !', e));
   
 const app = express(); 
 
@@ -26,7 +28,8 @@ app.use(cors());
 
 app.use(helmet());
 
-app.use(bodyParser.json()); //define json as a middleware global function for app
+app.use(express.json());
+// app.use(bodyParser.json()); //define json as a middleware global function for app
 
 app.use('/api/sauces', saucesRoutes); //save as a unique route to all request on /api/stuff
 app.use('/api/auth', userRoutes); //save for the user authentification
