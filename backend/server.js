@@ -1,7 +1,7 @@
 const http = require('http');
 const app = require('./app');
 
-const normalizePort = val => {
+const normalizePort = val => { // to get  a function the port from parametre or default
   const port = parseInt(val, 10);
 
   if (isNaN(port)) {

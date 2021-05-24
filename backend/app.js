@@ -24,9 +24,9 @@ const app = express();
 
 const path = require('path'); //path to server
 
-app.use(cors());
+app.use(cors()); //Cross-Origin Resource Sharing is a node.js package for providing a Connect/Express middleware that can be used to enable CORS with various options
 
-app.use(helmet());
+app.use(helmet()); //security configuration to safeguard application or API from usual security risks like XSS, Content Security Policy, and others
 
 app.use(express.json());
 // app.use(bodyParser.json()); //define json as a middleware global function for app

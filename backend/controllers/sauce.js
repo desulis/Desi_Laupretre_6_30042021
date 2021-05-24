@@ -7,7 +7,7 @@ const fs = require('fs'); //function file system that allow to modify the file s
 exports.createSauce = (req, res, next) => { 
   const sauceObject = JSON.parse(req.body.sauce); //parse Json to get object utilisable
   delete sauceObject._id;
-  const sauce = new Sauce({ //a chain request that converted from Thing
+  const sauce = new Sauce({ //a chain request that converted from Sauce
     ...sauceObject,
     imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}` //protocol : get a segment from http, add // and a server host, folder image and filename
   });
@@ -35,7 +35,7 @@ exports.getOneSauce = (req, res, next) => {
 exports.modifySauce = (req, res, next) => {
   const sauceObject = req.file ? // file ? exist or not
     {
-      ...JSON.parse(req.body.sauce), // if yes, parse the object and create as createThing
+      ...JSON.parse(req.body.sauce), // if yes, parse the object and create as createSauce
       imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
     } : { ...req.body }; //if not create one
     Sauce.findOne({

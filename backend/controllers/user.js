@@ -6,7 +6,7 @@ const CryptoJS = require('crypto-js');
 exports.signup = (req, res, next) => {
 	bcrypt.hash(req.body.password, 10) //Promise function async hash the passwords with 10x possibilities algorithme
 	.then(hash => {
-		const email = CryptoJS.AES.encrypt(req.body.email, process.env.AES_PHRASE).toString();  //encrypt email with crypt.js
+		const email = CryptoJS.SHA256(req.body.email).toString();  //encrypt email with crypto.js
 		User.create({
 			email: email,
 			password: hash
@@ -18,8 +18,8 @@ exports.signup = (req, res, next) => {
 };
 
 exports.login = (req, res, next) => {
-	const email = CryptoJS.AES.encrypt(req.body.email, process.env.AES_PHRASE).toString();
-	console.log(req.body.email, email)
+	const email = CryptoJS.SHA256(req.body.email).toString();
+	// console.log(req.body.email, email)
 	User.findOne({ email: email }) //find the same email exist in database
 	.then(user => {
 		if (!user) { //if not the same user
@@ -34,7 +34,7 @@ exports.login = (req, res, next) => {
 				userId: user._id,
 				token: jwt.sign( //use a sign function of jsonwebtoken to generate a token
 				  { userId: user._id }, //this token has an id as a payload (a data generate from token)
-				  'giggle noble ghost alone fit cruise salad paddle skill tilt turn lava grass tonight dutch', //temporary keyword to generate the token
+				  process.env.JWT_SECRET, //temporary keyword to generate the token in .env
 				  { expiresIn: '24h' }
 				)
 			});
